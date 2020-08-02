@@ -13,3 +13,10 @@ code {
 .selected {
   background-color: #add8e6 !important;
 }
+
+.action-icon {
+  cursor: pointer;
+}
+.action-icon:hover {
+  filter: brightness(85%);
+}

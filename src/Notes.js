@@ -1,33 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import NoteDisplay from './NoteDisplay';
 import NoteList from './NoteList';
 
 const Notes = () => {
 
-  const emptyNote = {
-    heading: '',
-    content: ''
+  const emptyNote = () => {
+    return {
+      heading: '',
+      content: '',
+      created: new Date()
+    }
   }
 
-  const [AllNotes, setAllNotes] = useState([
-    {
-      heading: 'Try Note',
-      content: 'This is some random shit content boi!'
-    }
-  ])
+  const [AllNotes, setAllNotes] = useState(
+    localStorage.getItem('Notes') ?
+      JSON.parse(localStorage.getItem("Notes"))
+      :
+      []
+  )
 
-  const [SelectedNote, setSelectedNote] = useState(0)
+  const deleteNote = (index) => {
+    let copyAllNotes = [...AllNotes]
+    if (index !== -1) {
+      copyAllNotes.splice(index, 1);
+      setAllNotes(copyAllNotes)
+    }
+  }
+
+  useEffect(() => {
+    localStorage.setItem("Notes", JSON.stringify(AllNotes))
+  }, [AllNotes])
+
+  const [SelectedNote, setSelectedNote] = useState(-1)
 
   const setNote = (heading, content) => {
-    let copyAllNotes = Object.assign([], AllNotes)
+    let copyAllNotes = [...AllNotes]
     copyAllNotes[SelectedNote].heading = heading
     copyAllNotes[SelectedNote].content = content
     setAllNotes(copyAllNotes)
   }
 
   const addNewNote = () => {
-    let res = AllNotes.concat(emptyNote)
+    let res = AllNotes.concat(emptyNote())
     setAllNotes(res)
     setSelectedNote(AllNotes.length)
   }
@@ -36,10 +51,10 @@ const Notes = () => {
     <Container fluid>
       <Row className='mt-4'>
         <Col xl={5}>
-          <NoteList AllNotes={AllNotes} addNewNote={addNewNote} SelectedNote={SelectedNote} setSelectedNote={setSelectedNote} />
+          <NoteList deleteNote={deleteNote} AllNotes={AllNotes} addNewNote={addNewNote} SelectedNote={SelectedNote} setSelectedNote={setSelectedNote} />
         </Col>
         <Col xl={7}>
-          <NoteDisplay Note={AllNotes[SelectedNote]} setNote={setNote} />
+          <NoteDisplay Note={SelectedNote === -1 ? {} : AllNotes[SelectedNote]} setNote={setNote} />
         </Col>
       </Row>
     </Container>
