@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { AiOutlineFileAdd } from 'react-icons/ai';
 import { Card, CardBody, CardHeader, Col, Input, Row } from 'reactstrap';
 import { MdDelete } from 'react-icons/md'
+import _ from 'lodash'
 
 const NoteList = ({ addNewNote, AllNotes, SelectedNote, setSelectedNote, deleteNote }) => {
     const [SearchText, setSearchText] = useState('')
@@ -12,7 +13,10 @@ const NoteList = ({ addNewNote, AllNotes, SelectedNote, setSelectedNote, deleteN
         if (SearchText) {
             setSelectedNote(-1)
             setSearchedNotes(AllNotes.filter(note => {
-                return note.heading.indexOf(SearchText) >= 0 || note.content.indexOf(SearchText) >= 0
+                let heading = note.heading.toLowerCase()
+                let content = note.content.toLowerCase()
+                let toSearch = SearchText.toLowerCase()
+                return heading.indexOf(toSearch) >= 0 || content.indexOf(toSearch) >= 0
             }))
         }
         else {
@@ -41,39 +45,45 @@ const NoteList = ({ addNewNote, AllNotes, SelectedNote, setSelectedNote, deleteN
                 </Row>
             </CardHeader>
             <CardBody>
+                {!_.isEmpty(SearchText) && _.isEmpty(SearchedNotes) ?
+                    <h6>No notes found!</h6>
+                    :
+                    <>
+                        {SearchedNotes && SearchedNotes.map((note, index) => {
+                            return (
+                                <Card
+                                    className={'my-2 ' + (SelectedNote === index ? 'selected' : '')}
+                                    key={index}
+                                    onClick={() => setSelectedNote(index)}
+                                >
+                                    <CardBody>
+                                        <Row className='justify-content-between'>
+                                            <Col xl={10} lg={10} md={10} sm={10} xs={8}>
+                                                {
+                                                    note?.heading ?
+                                                        <h5 className='m-0'>{note?.heading}</h5>
+                                                        :
+                                                        note?.content ?
+                                                            <h5 className='m-0 text-muted'>No note title</h5>
+                                                            :
+                                                            <h5 className='m-0 text-muted'>Empty Note</h5>
+                                                }
+                                            </Col>
+                                            <Col xl={2} lg={2} md={2} sm={2} xs={4} onClick={e => e.stopPropagation()} className='d-flex justify-content-end'>
+                                                <MdDelete onClick={() => deleteNote(index)} className='text-danger action-icon' size={25} />
+                                            </Col>
+                                        </Row>
 
-                {SearchedNotes && SearchedNotes.map((note, index) => {
-                    return (
-                        <Card
-                            className={'my-2 ' + (SelectedNote === index ? 'selected' : '')}
-                            key={index}
-                            onClick={() => setSelectedNote(index)}
-                        >
-                            <CardBody>
-                                <Row className='justify-content-between'>
-                                    <Col xl={10} lg={10} md={10} sm={10} xs={8}>
-                                        {
-                                            note?.heading ?
-                                                <h5 className='m-0'>{note?.heading}</h5>
-                                                :
-                                                note?.content ?
-                                                    <h5 className='m-0 text-muted'>No note title</h5>
-                                                    :
-                                                    <h5 className='m-0 text-muted'>Empty Note</h5>
-                                        }
-                                    </Col>
-                                    <Col xl={2} lg={2} md={2} sm={2} xs={4} onClick={e => e.stopPropagation()} className='d-flex justify-content-end'>
-                                        <MdDelete onClick={() => deleteNote(index)} className='text-danger action-icon' size={25} />
-                                    </Col>
-                                </Row>
+                                        <Row className='mt-4 mb-0 mr-2 justify-content-end'>
+                                            <p className='mb-0 text-muted'>Created {moment(note.created).fromNow()}</p>
+                                        </Row>
+                                    </CardBody>
+                                </Card>
+                            )
+                        })}
 
-                                <Row className='mt-4 mb-0 mr-2 justify-content-end'>
-                                    <p className='mb-0 text-muted'>Created {moment(note.created).fromNow()}</p>
-                                </Row>
-                            </CardBody>
-                        </Card>
-                    )
-                })}
+                    </>
+                }
 
             </CardBody>
 

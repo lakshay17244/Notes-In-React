@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardBody, CardHeader, Input } from 'reactstrap';
 import _ from 'lodash'
 
-const NoteDisplay = ({ Note, setNote }) => {
+const NoteDisplay = ({ Note, setNote, AllNotes }) => {
 
     return (
         <>
@@ -29,11 +29,22 @@ const NoteDisplay = ({ Note, setNote }) => {
                         </CardBody>
                     </Card>
                     :
+
                     <Card className='shadow'>
                         <CardBody className='p-4'>
-                            <h4 className='text-center text-muted'>Select a note to see it here!</h4>
+                            <h4 className='text-center text-muted'>
+                                {_.isEmpty(AllNotes) ?
+                                    'Start by creating a new note!'
+                                    :
+                                    ' Select a note to see it here!'
+                                }
+
+
+                            </h4>
                         </CardBody>
                     </Card>
+
+
             }
         </>
     )

@@ -50,11 +50,11 @@ const Notes = () => {
   return (
     <Container fluid>
       <Row className='mt-4'>
-        <Col className='my-2' xl={5} lg={5} md={10} sm={12} xs={12}>
+        <Col className='my-2 mx-auto' xl={5} lg={5} md={10} sm={12} xs={12}>
           <NoteList deleteNote={deleteNote} AllNotes={AllNotes} addNewNote={addNewNote} SelectedNote={SelectedNote} setSelectedNote={setSelectedNote} />
         </Col>
-        <Col className='my-2' xl={7} lg={7} md={10} sm={12} xs={12}>
-          <NoteDisplay Note={SelectedNote === -1 ? {} : AllNotes[SelectedNote]} setNote={setNote} />
+        <Col className='my-2 mx-auto' xl={7} lg={7} md={10} sm={12} xs={12}>
+          <NoteDisplay AllNotes={AllNotes} Note={SelectedNote === -1 ? {} : AllNotes[SelectedNote]} setNote={setNote} />
         </Col>
       </Row>
     </Container>
