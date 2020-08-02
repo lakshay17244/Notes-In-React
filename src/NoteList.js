@@ -27,7 +27,7 @@ const NoteList = ({ addNewNote, AllNotes, SelectedNote, setSelectedNote, deleteN
         <Card className='shadow'>
             <CardHeader>
                 <Row className='justify-content-between'>
-                    <Col xl={9}>
+                    <Col xl={9} lg={9} md={9} sm={9} xs={8}>
                         <Input
                             type='text'
                             value={SearchText}
@@ -35,7 +35,7 @@ const NoteList = ({ addNewNote, AllNotes, SelectedNote, setSelectedNote, deleteN
                             placeholder='Search a note by name/description'
                         />
                     </Col>
-                    <Col className='d-flex justify-content-end' xl={3}>
+                    <Col className='d-flex justify-content-end' xl={3} lg={3} md={3} sm={3} xs={4}>
                         <AiOutlineFileAdd className='action-icon' size={30} onClick={addNewNote} />
                     </Col>
                 </Row>
@@ -51,7 +51,7 @@ const NoteList = ({ addNewNote, AllNotes, SelectedNote, setSelectedNote, deleteN
                         >
                             <CardBody>
                                 <Row className='justify-content-between'>
-                                    <Col xl={10}>
+                                    <Col xl={10} lg={10} md={10} sm={10} xs={8}>
                                         {
                                             note?.heading ?
                                                 <h5 className='m-0'>{note?.heading}</h5>
@@ -62,7 +62,7 @@ const NoteList = ({ addNewNote, AllNotes, SelectedNote, setSelectedNote, deleteN
                                                     <h5 className='m-0 text-muted'>Empty Note</h5>
                                         }
                                     </Col>
-                                    <Col xl={2} onClick={e => e.stopPropagation()} className='d-flex justify-content-end'>
+                                    <Col xl={2} lg={2} md={2} sm={2} xs={4} onClick={e => e.stopPropagation()} className='d-flex justify-content-end'>
                                         <MdDelete onClick={() => deleteNote(index)} className='text-danger action-icon' size={25} />
                                     </Col>
                                 </Row>
